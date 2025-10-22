@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.patrick.movieapp.R
 import com.patrick.movieapp.data.local.TokenManager
 import com.patrick.movieapp.data.repository.AuthRepository
 import com.patrick.movieapp.databinding.FragmentLoginBinding
@@ -30,7 +32,6 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViewModel()
         setupObservers()
         setupListeners()
@@ -46,13 +47,12 @@ class LoginFragment : Fragment() {
     private fun setupObservers() {
         viewModel.authState.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is Resource.Loading -> {
-                    showLoading(true)
-                }
+                is Resource.Loading -> { showLoading(true) }
 
-                is Resource.Success -> {
-                    showLoading(false)
-                    Toast.makeText(context, "Login exitoso", Toast.LENGTH_SHORT).show()
+                is Resource.Success -> { showLoading(false)
+                    Toast.makeText(context, "¡Bienvenido!", Toast.LENGTH_SHORT).show()
+                    // Navegar a Home
+                    findNavController().navigate(R.id.action_login_to_home)
                 }
 
                 is Resource.Error -> {
@@ -72,12 +72,15 @@ class LoginFragment : Fragment() {
                 viewModel.login(email, password)
             }
         }
-
         binding.tvRegister.setOnClickListener {
+            findNavController().navigate(R.id.action_login_to_register)
         }
     }
 
     private fun validateInput(email: String, password: String): Boolean {
+        binding.tilEmail.error = null
+        binding.tilPassword.error = null
+
         if (email.isEmpty()) {
             binding.tilEmail.error = "El email es requerido"
             return false
@@ -104,6 +107,8 @@ class LoginFragment : Fragment() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.btnLogin.isEnabled = !isLoading
+        binding.etEmail.isEnabled = !isLoading
+        binding.etPassword.isEnabled = !isLoading
     }
 
     override fun onDestroyView() {

@@ -7,22 +7,20 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.patrick.movieapp.R
 import com.patrick.movieapp.data.local.TokenManager
 import com.patrick.movieapp.data.repository.AuthRepository
 import com.patrick.movieapp.databinding.FragmentRegisterBinding
 import com.patrick.movieapp.utils.Resource
 
 class RegisterFragment : Fragment() {
-
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: AuthViewModel
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
@@ -30,7 +28,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViewModel()
         setupObservers()
         setupListeners()
@@ -46,17 +43,16 @@ class RegisterFragment : Fragment() {
     private fun setupObservers() {
         viewModel.authState.observe(viewLifecycleOwner) { resource ->
             when (resource) {
-                is Resource.Loading -> {
-                    showLoading(true)
-                }
+                is Resource.Loading -> { showLoading(true) }
 
                 is Resource.Success -> {
                     showLoading(false)
-                    Toast.makeText(context, "Registro exitoso", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "¡Cuenta creada!", Toast.LENGTH_SHORT).show()
+                    // Navegar a Home
+                    findNavController().navigate(R.id.action_register_to_home)
                 }
 
-                is Resource.Error -> {
-                    showLoading(false)
+                is Resource.Error -> { showLoading(false)
                     Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
                 }
             }
@@ -76,6 +72,7 @@ class RegisterFragment : Fragment() {
         }
 
         binding.tvLogin.setOnClickListener {
+            findNavController().navigate(R.id.action_register_to_login)
         }
     }
 
@@ -85,6 +82,10 @@ class RegisterFragment : Fragment() {
         password: String,
         confirmPassword: String
     ): Boolean {
+        // Limpiar errores
+        binding.tilEmail.error = null
+        binding.tilPassword.error = null
+        binding.tilConfirmPassword.error = null
 
         if (email.isEmpty()) {
             binding.tilEmail.error = "El email es requerido"
@@ -110,13 +111,16 @@ class RegisterFragment : Fragment() {
             binding.tilConfirmPassword.error = "Las contraseñas no coinciden"
             return false
         }
-
         return true
     }
 
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.btnRegister.isEnabled = !isLoading
+        binding.etFullName.isEnabled = !isLoading
+        binding.etEmail.isEnabled = !isLoading
+        binding.etPassword.isEnabled = !isLoading
+        binding.etConfirmPassword.isEnabled = !isLoading
     }
 
     override fun onDestroyView() {

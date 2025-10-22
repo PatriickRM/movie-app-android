@@ -2,6 +2,7 @@ package com.patrick.movieapp.presentation.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.NavHostFragment
 import com.patrick.movieapp.R
 import com.patrick.movieapp.databinding.ActivityMainBinding
 
@@ -13,12 +14,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (savedInstanceState == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(
-                    R.id.fragmentContainer,
-                    com.patrick.movieapp.presentation.auth.LoginFragment())
-                .commit()
-        }
+        // Setup Navigation
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
     }
 }

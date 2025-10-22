@@ -1,3 +1,10 @@
+import java.util.Properties
+import java.io.FileInputStream
+
+val localProperties = Properties().apply {
+    load(FileInputStream(rootProject.file("local.properties")))
+}
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -6,7 +13,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
-android {
+    android {
     namespace = "com.patrick.movieapp"
     compileSdk = 36
 
@@ -23,6 +30,8 @@ android {
         buildConfigField("String", "BASE_URL", "\"https://movie-app-production-f94d.up.railway.app/\"")
         buildConfigField("String", "TMDB_BASE_URL", "\"https://api.themoviedb.org/3/\"")
         buildConfigField("String", "TMDB_IMAGE_URL", "\"https://image.tmdb.org/t/p/\"")
+        val tmdbApiKey = localProperties.getProperty("tmdb.apiKey") ?: ""
+        buildConfigField("String", "TMDB_API_KEY", "\"$tmdbApiKey\"")
     }
 
 
@@ -62,6 +71,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.swiperefreshlayout)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
