@@ -79,6 +79,7 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
     // Core Android
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -102,4 +103,7 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     // Glide (imágenes)
     implementation("com.github.bumptech.glide:glide:4.16.0")
+    // YouTube Player
+    implementation("com.pierfrancescosoffritti.androidyoutubeplayer:core:12.1.0")
+
 }

@@ -28,11 +28,37 @@ data class TMDbMovieDetails(
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("vote_average") val voteAverage: Double,
-    val runtime: Int?,
-    val genres: List<Genre>
+    @SerializedName("runtime")val runtime: Int?,
+    @SerializedName("genres")val genres: List<Genre>
 )
 
 data class Genre(
     val id: Int,
     val name: String
+)
+data class TMDbVideoResponse(
+    val id: Int,
+    val results: List<TMDbVideo>
+)
+//Trailer
+data class TMDbVideo(
+    val id: String,
+    val key: String,
+    val name: String,
+    val site: String,
+    val type: String,
+    @SerializedName("published_at") val publishedAt: String
+)
+
+// Credits (Cast)
+data class TMDbCreditsResponse(
+    val id: Int,
+    val cast: List<Cast>
+)
+
+data class Cast(
+    val id: Int,
+    val name: String,
+    val character: String,
+    @SerializedName("profile_path") val profilePath: String?
 )

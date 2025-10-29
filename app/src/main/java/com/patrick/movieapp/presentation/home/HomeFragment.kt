@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.patrick.movieapp.data.repository.MovieRepository
 import com.patrick.movieapp.databinding.FragmentHomeBinding
 import com.patrick.movieapp.utils.Resource
+import androidx.navigation.fragment.findNavController
+import com.patrick.movieapp.R
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -36,6 +38,7 @@ class HomeFragment : Fragment() {
         setupRecyclerViews()
         setupObservers()
         setupListeners()
+
     }
 
     private fun setupViewModel() {
@@ -47,9 +50,9 @@ class HomeFragment : Fragment() {
     private fun setupRecyclerViews() {
         // Trending
         trendingAdapter = MovieAdapter { movie ->
-            Toast.makeText(context, "Clicked: ${movie.title}", Toast.LENGTH_SHORT).show()
-
+            navigateToDetails(movie.id)
         }
+
         binding.rvTrending.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = trendingAdapter
@@ -57,7 +60,7 @@ class HomeFragment : Fragment() {
 
         // Popular
         popularAdapter = MovieAdapter { movie ->
-            Toast.makeText(context, "Clicked: ${movie.title}", Toast.LENGTH_SHORT).show()
+            navigateToDetails(movie.id)
         }
         binding.rvPopular.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -66,8 +69,9 @@ class HomeFragment : Fragment() {
 
         // Upcoming
         upcomingAdapter = MovieAdapter { movie ->
-            Toast.makeText(context, "Clicked: ${movie.title}", Toast.LENGTH_SHORT).show()
+            navigateToDetails(movie.id)
         }
+
         binding.rvUpcoming.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = upcomingAdapter
@@ -75,12 +79,19 @@ class HomeFragment : Fragment() {
 
         // Top Rated
         topRatedAdapter = MovieAdapter { movie ->
-            Toast.makeText(context, "Clicked: ${movie.title}", Toast.LENGTH_SHORT).show()
+            navigateToDetails(movie.id)
         }
+
         binding.rvTopRated.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = topRatedAdapter
         }
+    }
+    private fun navigateToDetails(movieId: Int) {
+        val bundle = Bundle().apply {
+            putInt("movieId", movieId)
+        }
+        findNavController().navigate(R.id.action_home_to_details, bundle)
     }
 
     private fun setupObservers() {
