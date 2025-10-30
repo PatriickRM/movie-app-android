@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/background_dark"
+    android:gravity="center"
+    android:padding="32dp">
+
+    <!-- Header -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="🔍 Buscar Películas"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"/>
+
+    <!-- Placeholder Icon -->
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_search"
+        app:tint="@color/text_hint"
+        android:alpha="0.5"/>
+
+    <!-- Placeholder Text -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Función Próximamente"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_secondary"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="La búsqueda de películas estará disponible pronto"
+        android:textSize="14sp"
+        android:textColor="@color/text_hint"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <!-- Coming Soon Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnComingSoon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="🚀 Próximamente"
+        android:textSize="16sp"
+        app:cornerRadius="12dp"
+        app:backgroundTint="@color/secondary"
+        android:textColor="@color/black"/>
+
+</LinearLayout>

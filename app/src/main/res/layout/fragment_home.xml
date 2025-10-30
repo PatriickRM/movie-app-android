@@ -18,31 +18,14 @@
             android:orientation="vertical">
 
             <!-- Header -->
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
                 android:padding="16dp"
-                android:gravity="center_vertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="🎬 CineMatch"
-                    android:textSize="28sp"
-                    android:textStyle="bold"
-                    android:textColor="@color/text_primary"/>
-
-                <ImageView
-                    android:id="@+id/btnProfile"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:src="@android:drawable/ic_menu_search"
-                    app:tint="@color/text_primary"
-                    android:background="?attr/selectableItemBackgroundBorderless"/>
-
-            </LinearLayout>
+                android:text="🎬 CineMatch"
+                android:textSize="28sp"
+                android:textStyle="bold"
+                android:textColor="@color/text_primary"/>
 
             <!-- Trending Section -->
             <LinearLayout

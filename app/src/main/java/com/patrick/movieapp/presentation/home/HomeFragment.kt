@@ -38,7 +38,6 @@ class HomeFragment : Fragment() {
         setupRecyclerViews()
         setupObservers()
         setupListeners()
-
     }
 
     private fun setupViewModel() {
@@ -87,6 +86,7 @@ class HomeFragment : Fragment() {
             adapter = topRatedAdapter
         }
     }
+
     private fun navigateToDetails(movieId: Int) {
         val bundle = Bundle().apply {
             putInt("movieId", movieId)
