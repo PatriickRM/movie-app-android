@@ -8,30 +8,36 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.patrick.movieapp.BuildConfig
 import com.patrick.movieapp.R
+import com.patrick.movieapp.data.local.TokenManager
+import com.patrick.movieapp.data.remote.dto.tmdb.TMDbMovieDetails
+import com.patrick.movieapp.data.repository.FavoriteRepository
 import com.patrick.movieapp.data.repository.MovieDetailsRepository
 import com.patrick.movieapp.databinding.FragmentMovieDetailsBinding
+import com.patrick.movieapp.presentation.favorites.FavoriteViewModel
+import com.patrick.movieapp.presentation.favorites.FavoriteViewModelFactory
 import com.patrick.movieapp.presentation.home.MovieAdapter
 import com.patrick.movieapp.utils.Resource
-import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.YouTubePlayer
-import androidx.navigation.fragment.findNavController
 
 class MovieDetailsFragment : Fragment() {
-
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var viewModel: MovieDetailsViewModel
+    private lateinit var favoriteViewModel: FavoriteViewModel
     private lateinit var castAdapter: CastAdapter
     private lateinit var similarAdapter: MovieAdapter
 
     private var movieId: Int = 0
-    private var youTubePlayer: YouTubePlayer? = null
+    private var currentMovie: TMDbMovieDetails? = null
+    private var isFavorite: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +51,6 @@ class MovieDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Obtener movieId del argumento
         movieId = arguments?.getInt("movieId") ?: 0
 
         if (movieId == 0) {
@@ -53,27 +58,33 @@ class MovieDetailsFragment : Fragment() {
             return
         }
 
-        setupViewModel()
+        setupViewModels()
         setupRecyclerViews()
         setupObservers()
+        setupListeners()
         loadData()
     }
 
-    private fun setupViewModel() {
-        val repository = MovieDetailsRepository()
-        val factory = MovieDetailsViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[MovieDetailsViewModel::class.java]
+    private fun setupViewModels() {
+        // Movie Details ViewModel
+        val detailsRepository = MovieDetailsRepository()
+        val detailsFactory = MovieDetailsViewModelFactory(detailsRepository)
+        viewModel = ViewModelProvider(this, detailsFactory)[MovieDetailsViewModel::class.java]
+
+        // Favorite ViewModel
+        val tokenManager = TokenManager(requireContext())
+        val favoriteRepository = FavoriteRepository(tokenManager)
+        val favoriteFactory = FavoriteViewModelFactory(favoriteRepository)
+        favoriteViewModel = ViewModelProvider(this, favoriteFactory)[FavoriteViewModel::class.java]
     }
 
     private fun setupRecyclerViews() {
-        // Cast
         castAdapter = CastAdapter()
         binding.rvCast.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
             adapter = castAdapter
         }
 
-        // Similar movies
         similarAdapter = MovieAdapter { movie ->
             findNavController().navigate(
                 R.id.action_movieDetailsFragment_self,
@@ -95,13 +106,14 @@ class MovieDetailsFragment : Fragment() {
                     binding.progressBar.visibility = View.VISIBLE
                     binding.scrollView.visibility = View.GONE
                 }
-
                 is Resource.Success -> {
                     binding.progressBar.visibility = View.GONE
                     binding.scrollView.visibility = View.VISIBLE
-                    resource.data?.let { displayMovieDetails(it) }
+                    resource.data?.let {
+                        currentMovie = it
+                        displayMovieDetails(it)
+                    }
                 }
-
                 is Resource.Error -> {
                     binding.progressBar.visibility = View.GONE
                     Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
@@ -149,6 +161,84 @@ class MovieDetailsFragment : Fragment() {
                 resource.data?.let { similarAdapter.submitList(it) }
             }
         }
+
+        // Estado de favorito
+        favoriteViewModel.isFavorite.observe(viewLifecycleOwner) { favorite ->
+            isFavorite = favorite
+            updateFavoriteButton()
+        }
+
+        // Resultado de agregar favorito
+        favoriteViewModel.addFavoriteResult.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    binding.btnFavorite.isEnabled = false
+                }
+                is Resource.Success -> {
+                    binding.btnFavorite.isEnabled = true
+                    Toast.makeText(context, "❤️ Agregado a favoritos", Toast.LENGTH_SHORT).show()
+                    favoriteViewModel.resetAddFavoriteResult()
+                }
+                is Resource.Error -> {
+                    binding.btnFavorite.isEnabled = true
+                    Toast.makeText(context, resource.message, Toast.LENGTH_LONG).show()
+                    favoriteViewModel.resetAddFavoriteResult()
+                }
+                else -> {}
+            }
+        }
+
+        // Resultado de eliminar favorito
+        favoriteViewModel.removeFavoriteResult.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+                    binding.btnFavorite.isEnabled = false
+                }
+                is Resource.Success -> {
+                    binding.btnFavorite.isEnabled = true
+                    Toast.makeText(context, "💔 Eliminado de favoritos", Toast.LENGTH_SHORT).show()
+                    favoriteViewModel.resetRemoveFavoriteResult()
+                }
+                is Resource.Error -> {
+                    binding.btnFavorite.isEnabled = true
+                    Toast.makeText(context, resource.message, Toast.LENGTH_SHORT).show()
+                    favoriteViewModel.resetRemoveFavoriteResult()
+                }
+                else -> {}
+            }
+        }
+    }
+
+    private fun setupListeners() {
+        // Botón de favorito
+        binding.btnFavorite.setOnClickListener {
+            currentMovie?.let { movie ->
+                if (isFavorite) {
+                    favoriteViewModel.removeFavorite(movieId)
+                } else {
+                    favoriteViewModel.addFavorite(
+                        movieId = movie.id,
+                        movieTitle = movie.title,
+                        moviePoster = movie.posterPath,
+                        movieOverview = movie.overview,
+                        releaseDate = movie.releaseDate,
+                        voteAverage = movie.voteAverage
+                    )
+                }
+            }
+        }
+    }
+
+    private fun updateFavoriteButton() {
+        if (isFavorite) {
+            binding.btnFavorite.setIconResource(R.drawable.ic_favorite)
+            binding.btnFavorite.text = "En Favoritos"
+            binding.btnFavorite.setIconTintResource(R.color.error)
+        } else {
+            binding.btnFavorite.setIconResource(R.drawable.ic_favorite_border)
+            binding.btnFavorite.text = "Agregar a Favoritos"
+            binding.btnFavorite.setIconTintResource(R.color.text_secondary)
+        }
     }
 
     private fun openYouTubeVideo(videoKey: String) {
@@ -166,9 +256,12 @@ class MovieDetailsFragment : Fragment() {
         viewModel.loadMovieVideos(movieId)
         viewModel.loadMovieCast(movieId)
         viewModel.loadSimilarMovies(movieId)
+
+        // Verificar si es favorito
+        favoriteViewModel.checkIsFavorite(movieId)
     }
 
-    private fun displayMovieDetails(movie: com.patrick.movieapp.data.remote.dto.tmdb.TMDbMovieDetails) {
+    private fun displayMovieDetails(movie: TMDbMovieDetails) {
         binding.apply {
             tvMovieTitle.text = movie.title
             tvMovieOverview.text = movie.overview

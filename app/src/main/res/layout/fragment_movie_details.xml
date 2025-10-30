@@ -2,12 +2,10 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_dark">
 
-    <!-- Content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
@@ -128,6 +126,21 @@
                     android:text="Acción, Aventura, Ciencia Ficción"
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"/>
+
+                <!-- Botón de Favorito -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnFavorite"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Agregar a Favoritos"
+                    android:textSize="16sp"
+                    app:icon="@drawable/ic_favorite_border"
+                    app:iconGravity="textStart"
+                    app:cornerRadius="12dp"
+                    app:strokeWidth="2dp"
+                    app:strokeColor="@color/text_secondary"
+                    style="@style/Widget.Material3.Button.OutlinedButton"/>
 
                 <!-- Trailer Section -->
                 <TextView

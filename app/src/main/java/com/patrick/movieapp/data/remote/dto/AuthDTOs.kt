@@ -54,3 +54,10 @@ data class ErrorResponse(
     val path: String,
     val timestamp: String
 )
+data class UserStatsResponse(
+    val totalFavorites: Int,
+    val totalRatings: Int,
+    val totalLists: Int,
+    val averageRating: Double,
+    val totalAIRequests: Int
+)

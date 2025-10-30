@@ -1,8 +1,7 @@
 package com.patrick.movieapp.data.remote
 
 import com.patrick.movieapp.BuildConfig;
-import com.patrick.movieapp.data.remote.api.AuthApi
-import com.patrick.movieapp.data.remote.api.TMDbApi
+import com.patrick.movieapp.data.remote.api.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -39,6 +38,12 @@ object RetrofitInstance {
         .addConverterFactory(GsonConverterFactory.create())
         .build()
 
+    //BACKENDS API
     val authApi: AuthApi = backendRetrofit.create(AuthApi::class.java)
+    val favoriteApi: FavoriteApi = backendRetrofit.create(FavoriteApi::class.java)
+    val customListApi: CustomListApi = backendRetrofit.create(CustomListApi::class.java)
+    val ratingApi: RatingApi = backendRetrofit.create(RatingApi::class.java)
+    val userApi: UserApi = backendRetrofit.create(UserApi::class.java)
+    //TMDB API
     val tmdbApi: TMDbApi = tmdbRetrofit.create(TMDbApi::class.java)
 }
