@@ -43,10 +43,13 @@
         <action
             android:id="@+id/action_home_to_details"
             app:destination="@id/movieDetailsFragment"/>
-        <action
-            android:id="@+id/action_home_to_favorites"
-            app:destination="@id/favoritesFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.patrick.movieapp.presentation.search.SearchFragment"
+        android:label="Buscar"/>
+
 
     <fragment
         android:id="@+id/movieDetailsFragment"
@@ -71,6 +74,41 @@
 
         <action
             android:id="@+id/action_favorites_to_details"
+            app:destination="@id/movieDetailsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/ratingsFragment"
+        android:name="com.patrick.movieapp.presentation.ratings.RatingsFragment"
+        android:label="Mis Calificaciones">
+
+        <action
+            android:id="@+id/action_ratings_to_details"
+            app:destination="@id/movieDetailsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/customListsFragment"
+        android:name="com.patrick.movieapp.presentation.customlists.CustomListsFragment"
+        android:label="Mis Listas">
+
+        <action
+            android:id="@+id/action_customLists_to_listDetails"
+            app:destination="@id/listDetailsFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/listDetailsFragment"
+        android:name="com.patrick.movieapp.presentation.customlists.ListDetailsFragment"
+        android:label="Detalles de Lista">
+
+        <argument
+            android:name="listId"
+            app:argType="long"
+            android:defaultValue="0L"/>
+
+        <action
+            android:id="@+id/action_listDetails_to_movieDetails"
             app:destination="@id/movieDetailsFragment"/>
     </fragment>
 
