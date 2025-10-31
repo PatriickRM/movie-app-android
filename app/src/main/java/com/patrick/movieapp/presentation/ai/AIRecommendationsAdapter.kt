@@ -1,5 +1,6 @@
 package com.patrick.movieapp.presentation.ai
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -37,6 +38,7 @@ class AIRecommendationsAdapter(
                 tvReason.text = recommendation.reason
 
                 root.setOnClickListener {
+                    Log.d("AIAdapter", "Clicked movie ID: ${recommendation.movieId}, Title: ${recommendation.title}")
                     onMovieClick(recommendation.movieId)
                 }
             }

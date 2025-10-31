@@ -5,12 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.patrick.movieapp.R
 import com.patrick.movieapp.data.local.TokenManager
+import com.patrick.movieapp.data.remote.dto.ai.response.AILimitResponse
 import com.patrick.movieapp.data.repository.AIRecommendationRepository
 import com.patrick.movieapp.databinding.FragmentAiRecommendationsBinding
 import com.patrick.movieapp.utils.Resource
@@ -90,6 +92,11 @@ class AIRecommendationsFragment : Fragment() {
                     binding.etPrompt.isEnabled = true
 
                     resource.data?.let { response ->
+                        Log.d("AIFragment", "Received ${response.recommendations.size} recommendations")
+                        response.recommendations.forEachIndexed { index, rec ->
+                            Log.d("AIFragment", "Recommendation $index: ID=${rec.movieId}, Title=${rec.title}")
+                        }
+
                         binding.emptyState.visibility = View.GONE
                         binding.resultsContainer.visibility = View.VISIBLE
 
@@ -167,7 +174,7 @@ class AIRecommendationsFragment : Fragment() {
         viewModel.checkAILimit()
     }
 
-    private fun updateLimitUI(limit: com.patrick.movieapp.model.dto.auth.response.AILimitResponse) {
+    private fun updateLimitUI(limit: AILimitResponse) {
         if (limit.isPremium) {
             binding.cardPremiumBanner.visibility = View.GONE
             binding.tvRequestsRemaining.visibility = View.GONE
