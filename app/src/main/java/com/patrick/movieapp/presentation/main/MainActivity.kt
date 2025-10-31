@@ -30,12 +30,12 @@ class MainActivity : AppCompatActivity() {
         // Controlar visibilidad del Bottom Navigation
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                // Mostrar Bottom Nav en estos fragments
+                // Mostrar Bottom Nav
                 R.id.homeFragment,
-                R.id.searchFragment,
+                R.id.aiRecommendationsFragment,
                 R.id.favoritesFragment,
                 R.id.customListsFragment,
-                R.id.ratingsFragment -> {
+                R.id.profileFragment -> {
                     binding.bottomNavigation.visibility = View.VISIBLE
                 }
                 // Ocultar en los demás

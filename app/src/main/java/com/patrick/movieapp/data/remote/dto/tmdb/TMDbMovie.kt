@@ -66,3 +66,13 @@ data class Cast(
 data class TMDbGenreListResponse(
     val genres: List<Genre>
 )
+data class MovieRecommendation(
+    @SerializedName("movieId")
+    val movieId: Int,
+
+    @SerializedName("title")
+    val title: String,
+
+    @SerializedName("reason")
+    val reason: String
+)

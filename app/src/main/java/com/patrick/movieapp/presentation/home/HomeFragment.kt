@@ -166,7 +166,11 @@ class HomeFragment : Fragment() {
             viewModel.loadMovies()
             binding.swipeRefresh.isRefreshing = false
         }
+        binding.btnSearch.setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_search)
+        }
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

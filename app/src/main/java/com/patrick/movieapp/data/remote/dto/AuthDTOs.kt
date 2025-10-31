@@ -33,6 +33,7 @@ data class AuthResponse(
     val user: UserResponse
 )
 
+
 data class UserResponse(
     val id: Long,
     val email: String,

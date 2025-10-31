@@ -46,4 +46,6 @@ object RetrofitInstance {
     val userApi: UserApi = backendRetrofit.create(UserApi::class.java)
     //TMDB API
     val tmdbApi: TMDbApi = tmdbRetrofit.create(TMDbApi::class.java)
+    //IA API
+    val aiApi: AIApi = backendRetrofit.create(AIApi::class.java)
 }
