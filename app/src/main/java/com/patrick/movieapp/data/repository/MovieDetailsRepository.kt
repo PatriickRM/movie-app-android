@@ -19,7 +19,7 @@ class MovieDetailsRepository {
         try {
             emit(Resource.Loading())
 
-            // 🔹 Intentar primero en español
+            // Intentar primero en español
             val responseEs = tmdbApi.getMovieDetails(movieId, apiKey, "es-ES")
 
             val movieDetails = if (responseEs.isSuccessful && responseEs.body() != null) {

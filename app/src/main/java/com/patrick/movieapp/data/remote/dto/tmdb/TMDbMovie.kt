@@ -62,3 +62,7 @@ data class Cast(
     val character: String,
     @SerializedName("profile_path") val profilePath: String?
 )
+
+data class TMDbGenreListResponse(
+    val genres: List<Genre>
+)

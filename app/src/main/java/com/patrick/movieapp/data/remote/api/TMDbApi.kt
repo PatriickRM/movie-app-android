@@ -1,6 +1,7 @@
 package com.patrick.movieapp.data.remote.api
 
 import com.patrick.movieapp.data.remote.dto.tmdb.TMDbCreditsResponse
+import com.patrick.movieapp.data.remote.dto.tmdb.TMDbGenreListResponse
 import com.patrick.movieapp.data.remote.dto.tmdb.TMDbMovieDetails
 import com.patrick.movieapp.data.remote.dto.tmdb.TMDbMovieListResponse
 import com.patrick.movieapp.data.remote.dto.tmdb.TMDbVideoResponse
@@ -61,4 +62,28 @@ interface TMDbApi {
         @Query("api_key") apiKey: String,
         @Query("language") language: String = "es-ES"
     ): Response<TMDbMovieListResponse>
+
+    @GET("search/movie")
+    suspend fun searchMovies(
+        @Query("api_key") apiKey: String,
+        @Query("query") query: String,
+        @Query("language") language: String = "es-ES",
+        @Query("page") page: Int = 1
+    ): Response<TMDbMovieListResponse>
+
+    @GET("discover/movie")
+    suspend fun discoverMovies(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "es-ES",
+        @Query("with_genres") genreId: Int? = null,
+        @Query("primary_release_year") year: Int? = null,
+        @Query("vote_average.gte") minRating: Double? = null,
+        @Query("sort_by") sortBy: String = "popularity.desc"
+    ): Response<TMDbMovieListResponse>
+
+    @GET("genre/movie/list")
+    suspend fun getGenres(
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String = "es-ES"
+    ): Response<TMDbGenreListResponse>
 }
