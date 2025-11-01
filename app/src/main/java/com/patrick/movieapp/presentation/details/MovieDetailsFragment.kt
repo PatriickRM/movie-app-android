@@ -29,15 +29,13 @@ import com.patrick.movieapp.presentation.ratings.RatingViewModel
 import com.patrick.movieapp.presentation.ratings.RatingViewModelFactory
 import com.patrick.movieapp.utils.Resource
 
-<<<<<<< HEAD
 import com.patrick.movieapp.presentation.customlists.CustomListViewModel
 import com.patrick.movieapp.presentation.customlists.CustomListViewModelFactory
 import com.patrick.movieapp.data.repository.CustomListRepository
 
 import com.google.android.material.snackbar.Snackbar
 
-=======
->>>>>>> 3a1acd080f1d287b3d972cd5856e8e333784d48d
+
 class MovieDetailsFragment : Fragment() {
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
@@ -52,13 +50,11 @@ class MovieDetailsFragment : Fragment() {
     private var currentMovie: TMDbMovieDetails? = null
     private var isFavorite: Boolean = false
     private var currentRating: Double? = null
-<<<<<<< HEAD
     private lateinit var customListViewModel: CustomListViewModel
     private var lastSelectedListName: String? = null
 
 
-=======
->>>>>>> 3a1acd080f1d287b3d972cd5856e8e333784d48d
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -101,7 +97,6 @@ class MovieDetailsFragment : Fragment() {
         val ratingRepository = RatingRepository(tokenManager)
         val ratingFactory = RatingViewModelFactory(ratingRepository)
         ratingViewModel = ViewModelProvider(this, ratingFactory)[RatingViewModel::class.java]
-<<<<<<< HEAD
 
         // Custom List ViewModel
         val listRepository = CustomListRepository(tokenManager)
@@ -109,8 +104,7 @@ class MovieDetailsFragment : Fragment() {
         customListViewModel = ViewModelProvider(this, listFactory)[CustomListViewModel::class.java]
         customListViewModel.loadUserLists()
 
-=======
->>>>>>> 3a1acd080f1d287b3d972cd5856e8e333784d48d
+
     }
 
     private fun setupRecyclerViews() {
@@ -277,7 +271,6 @@ class MovieDetailsFragment : Fragment() {
         binding.btnRate.setOnClickListener {
             showRatingDialog()
         }
-<<<<<<< HEAD
 
         // Botón Agregar a Lista
         binding.btnAddToList.setOnClickListener {
@@ -346,8 +339,6 @@ class MovieDetailsFragment : Fragment() {
             }
         }
 
-=======
->>>>>>> 3a1acd080f1d287b3d972cd5856e8e333784d48d
     }
 
     private fun showRatingDialog() {
