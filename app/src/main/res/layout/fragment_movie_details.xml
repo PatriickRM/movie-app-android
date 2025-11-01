@@ -127,6 +127,7 @@
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"/>
 
+<<<<<<< HEAD
                 <!-- Sección de Botones -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -186,6 +187,49 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
 
+=======
+                <!-- Botones de Acción -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <!-- Botón de Favorito -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnFavorite"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="8dp"
+                        android:text="Favorito"
+                        android:textSize="14sp"
+                        app:icon="@drawable/ic_favorite_border"
+                        app:iconGravity="textStart"
+                        app:cornerRadius="12dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="@color/text_secondary"
+                        style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+                    <!-- Botón de Calificar -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnRate"
+                        android:layout_width="0dp"
+                        android:layout_height="56dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:text="⭐ Calificar"
+                        android:textSize="14sp"
+                        app:icon="@drawable/ic_star"
+                        app:iconGravity="textStart"
+                        app:cornerRadius="12dp"
+                        app:strokeWidth="2dp"
+                        app:strokeColor="@color/text_secondary"
+                        style="@style/Widget.Material3.Button.OutlinedButton"/>
+
+                </LinearLayout>
+>>>>>>> 3a1acd080f1d287b3d972cd5856e8e333784d48d
 
                 <!-- Trailer Section -->
                 <TextView
