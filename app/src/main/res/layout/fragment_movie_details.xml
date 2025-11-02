@@ -127,7 +127,6 @@
                     android:textSize="14sp"
                     android:textColor="@color/text_secondary"/>
 
-<<<<<<< HEAD
                 <!-- Sección de Botones -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -187,7 +186,7 @@
                         android:textColor="@color/white"/>
                 </LinearLayout>
 
-=======
+
                 <!-- Botones de Acción -->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -229,7 +228,7 @@
                         style="@style/Widget.Material3.Button.OutlinedButton"/>
 
                 </LinearLayout>
->>>>>>> 3a1acd080f1d287b3d972cd5856e8e333784d48d
+
 
                 <!-- Trailer Section -->
                 <TextView
